@@ -7,7 +7,14 @@
 # Description:
 #****************************************************
 
+import logging
 import argparse
+
+from  downloader import open_url
+from  parser import parse_index
+from downloader import download_section
+
+LOG = logging.getLogger(__name__)
 
 
 def show_comic_list():
@@ -22,7 +29,11 @@ def update_comics():
 
 
 def download_comic(url):
-    pass
+    res = open_url(url)
+    if not res:
+        raise Exception("open index url failure")
+    section_list = parse_index(res, url)
+    download_section(section_list[0])
 
 
 def checkout_url(url):
